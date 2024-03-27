@@ -34,9 +34,47 @@ public class Path {
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+                List<Arc> arcs = new ArrayList<Arc>();
+                int numArc = 0;
+                int cmptArc = 0;
+                int cmptNoeud = 0;
+                double cheminMin = Double.POSITIVE_INFINITY;
+                if(nodes.size() == 1)
+                {
+                    return new Path(graph, nodes.get(0));
+                }
+                else if(nodes.isEmpty())
+                {
+                    return new Path(graph);
+                }
+                else
+                {
+                    for(Node point : nodes)
+                    {
+                        if(!point.equals(nodes.get(nodes.size()-1)))
+                        {
+                            cheminMin = Float.POSITIVE_INFINITY;
+                            numArc = 0;
+                            cmptArc = 0;
+                            for(Arc lien : point.getSuccessors())
+                            {
+                                if(lien.getMinimumTravelTime() < cheminMin & lien.getDestination() == nodes.get(cmptNoeud+1))
+                                {
+                                    cheminMin = lien.getMinimumTravelTime();
+                                    numArc = cmptArc;
+                                }
+                                cmptArc++;
+                            }
+                            if(cheminMin == Float.POSITIVE_INFINITY)
+                            {
+                                throw new IllegalArgumentException("Pas de successeur trouvé !");
+                            }
+                            arcs.add(point.getSuccessors().get(numArc));
+                        }
+                        cmptNoeud++;
+                    }
+                    return new Path(graph, arcs);
+                }
     }
 
     /**
@@ -56,8 +94,46 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+        int numArc = 0;
+        int cmptArc = 0;
+        int cmptNoeud = 0;
+        float cheminMin = Float.POSITIVE_INFINITY;
+        if(nodes.size() == 1)
+        {
+            return new Path(graph, nodes.get(0));
+        }
+        else if(nodes.isEmpty())
+        {
+            return new Path(graph);
+        }
+        else
+        {
+            for(Node point : nodes)
+            {
+                if(!point.equals(nodes.get(nodes.size()-1)))
+                {
+                    cheminMin = Float.POSITIVE_INFINITY;
+                    numArc = 0;
+                    cmptArc = 0;
+                    for(Arc lien : point.getSuccessors())
+                    {
+                        if(lien.getLength() < cheminMin & lien.getDestination() == nodes.get(cmptNoeud+1))
+                        {
+                            cheminMin = lien.getLength();
+                            numArc = cmptArc;
+                        }
+                        cmptArc++;
+                    }
+                    if(cheminMin == Float.POSITIVE_INFINITY)
+                    {
+                        throw new IllegalArgumentException("Pas de successeur trouvé !");
+                    }
+                    arcs.add(point.getSuccessors().get(numArc));
+                }
+                cmptNoeud++;
+            }
+            return new Path(graph, arcs);
+        }
     }
 
     /**
@@ -198,11 +274,25 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean isValid = false;
+        if(isEmpty())
+        {
+            isValid = true;
+        }
+
+        else if(size() == 1)
+        {
+            isValid = true;
+        }
+
+        else if(this.arcs.get(0).getOrigin() == this.origin & this.arcs.get(1).getOrigin() == this.arcs.get(0).getDestination() & this.arcs.get(2).getOrigin() == this.arcs.get(1).getDestination())
+        {
+            isValid = true;
+        }
+
+        return isValid;
     }
 
     /**
@@ -210,11 +300,14 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        float dis = 0;
+        for(Arc elem : this.arcs)
+        {
+            dis += elem.getLength();
+        }
+        return dis;
     }
 
     /**
