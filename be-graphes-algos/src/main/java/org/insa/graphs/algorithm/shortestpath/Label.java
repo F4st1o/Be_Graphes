@@ -2,17 +2,18 @@ package org.insa.graphs.algorithm.shortestpath;
 
 import org.insa.graphs.model.*;
 
-public class Label {
+public class Label implements Comparable<Label>{
     
     private final Node sommetCourant;
     private boolean marque = false;
     private double coutChemin = Double.POSITIVE_INFINITY;
     private Arc arcPere;
 
-    public Label(Node sommet, Arc pere)
+    public Label(Node sommet, Arc pere, Boolean marqueBool)
     {
         this.sommetCourant = sommet;
         this.arcPere = pere;
+        this.marque = marqueBool;
     }
 
     public Node getCourant()
@@ -25,7 +26,7 @@ public class Label {
         return this.marque;
     }
 
-    public double getCout()
+    public double getCoutRealise()
     {
         return this.coutChemin;
     }
@@ -40,4 +41,23 @@ public class Label {
         return this.coutChemin;
     }
 
+    public int compareTo(Label autre)
+    {
+        return (int)(this.getCost() - autre.getCost());
+    }
+
+    public void setMarquetrue()
+    {
+        this.marque = true;
+    }
+
+    public void modifCoutRealise(double a)
+    {
+        this.coutChemin = a;
+    }
+
+    public void modifPere(Arc e)
+    {
+        this.arcPere = e;
+    }
 }
