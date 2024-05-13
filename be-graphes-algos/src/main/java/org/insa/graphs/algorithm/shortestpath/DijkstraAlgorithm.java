@@ -14,6 +14,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         super(data);
     }
 
+    public Label initLabel(Node som)
+    {
+        return new Label(som, null, false);
+    }
+
     @Override
     protected ShortestPathSolution doRun() {
         final ShortestPathData data = getInputData();
@@ -28,7 +33,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         for(i=0;i<tab.length;i++)
         {
-            tab[i] = new Label(data.getGraph().get(i), null, false);
+            tab[i] = initLabel(data.getGraph().get(i));
         }
         tab[data.getOrigin().getId()].modifCoutRealise(coutRealise);
         tas.insert(tab[data.getOrigin().getId()]);

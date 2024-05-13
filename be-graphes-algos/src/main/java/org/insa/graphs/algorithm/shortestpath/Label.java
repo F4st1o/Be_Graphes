@@ -43,7 +43,7 @@ public class Label implements Comparable<Label>{
 
     public int compareTo(Label autre)
     {
-        return (int)(this.getCost() - autre.getCost());
+        return (int)(this.getTotalCost() - autre.getTotalCost());
     }
 
     public void setMarquetrue()
@@ -59,5 +59,10 @@ public class Label implements Comparable<Label>{
     public void modifPere(Arc e)
     {
         this.arcPere = e;
+    }
+
+    public double getTotalCost()
+    {
+        return getCost();
     }
 }
